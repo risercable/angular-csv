@@ -12,12 +12,18 @@
       "es2017",
       "es5"
     ],
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+     "baseUrl": "./"
   },
   "files": [
     "Angular-csv.ts",
     "Angular-csv.spec.ts",
-    "custom.d.ts"
+    "custom.d.ts",
+    "index.ts"
+  ],
+  "outDir": "dist",
+  "include": [
+    "*.ts"
   ],
   "exclude": [
     "node_modules"

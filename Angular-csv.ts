@@ -164,24 +164,34 @@ export class AngularCsv {
             return data.toString().replace('.', this._options.decimalseparator);
         }
 
-        if (typeof data === 'string') {
-            data = data.replace(/"/g, '""');
-            if (this._options.quoteStrings || data.indexOf(',') > -1 || data.indexOf('\n') > -1 || data.indexOf('\r') > -1) {
-                data = this._options.quoteStrings + data + this._options.quoteStrings;
-            }
-            return data;
+        if (this._options.nullToEmptyString && data === null) {
+            return '';
         }
 
-        if (this._options.nullToEmptyString) {
-            if(data === null) {
-                return data = '';
-            }
-            return data;
-        }
-        
         if (typeof data === 'boolean') {
             return data ? 'TRUE' : 'FALSE';
         }
+
+        // FIX: Handle objects/arrays
+        if (typeof data === 'object' && data !== null) {
+            data = JSON.stringify(data);
+        }
+
+        if (typeof data === 'string') {
+            data = data.replace(/"/g, '""');
+
+            if (
+                this._options.quoteStrings ||
+                data.indexOf(',') > -1 ||
+                data.indexOf('\n') > -1 ||
+                data.indexOf('\r') > -1
+            ) {
+                data = this._options.quoteStrings + data + this._options.quoteStrings;
+            }
+
+            return data;
+        }
+
         return data;
     }
 
